@@ -1,16 +1,15 @@
-# Mosquefund
-Fund 
+
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>চিড়াইপাড়া মসজিদ অর্থবিভাগ</title>
+  <title>Chiraipara Mosque Finance Department</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Firebase Compat SDK (LLFC-এর মতোই) -->
+  <!-- Firebase Compat SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
@@ -51,54 +50,57 @@ Fund
 <div class="container">
   <header>
     <div class="logo"><i class="fas fa-mosque"></i></div>
-    <h1>চিড়াইপাড়া মসজিদ অর্থবিভাগ</h1>
-    <p class="tagline">দান ও ব্যয় ব্যবস্থাপনা সিস্টেম (Firestore)</p>
+    <h1>Chiraipara Mosque Finance Department</h1>
+    <p class="tagline">Donation & Expense Management System (Firestore)</p>
     <div class="auth">
-      <span id="status">দর্শক মোড</span>
-      <button id="loginBtn" class="btn btn-success">অ্যাডমিন লগইন</button>
-      <button id="logoutBtn" class="btn btn-danger hidden">লগআউট</button>
+      <span id="status">Viewer Mode</span>
+      <button id="loginBtn" class="btn btn-success">Admin Login</button>
+      <button id="logoutBtn" class="btn btn-danger hidden">Logout</button>
     </div>
   </header>
 
   <div class="grid">
     <main>
       <div class="card hidden" id="adminPanel">
-        <h2>নতুন লেনদেন যোগ করুন</h2>
+        <h2>Add New Transaction</h2>
         <div class="form-grid">
-          <select id="type"><option value="income">আয় (দান)</option><option value="expense">ব্যয়</option></select>
+          <select id="type">
+            <option value="income">Income (Donation)</option>
+            <option value="expense">Expense</option>
+          </select>
           <select id="category"></select>
-          <input type="number" id="amount" placeholder="টাকার পরিমাণ (BDT)" min="1">
+          <input type="number" id="amount" placeholder="Amount (BDT)" min="1">
           <input type="date" id="date">
-          <input type="text" id="note" placeholder="নোট (ঐচ্ছিক)" style="grid-column: 1 / -1;">
+          <input type="text" id="note" placeholder="Note (Optional)" style="grid-column: 1 / -1;">
         </div>
         <div style="display:flex; gap:8px;">
-          <button id="addBtn" class="btn btn-success">যোগ করুন</button>
-          <button id="sampleBtn" class="btn">স্যাম্পল ডাটা</button>
+          <button id="addBtn" class="btn btn-success">Add</button>
+          <button id="sampleBtn" class="btn">Add Sample Data</button>
         </div>
       </div>
 
       <div class="card">
-        <h2>ফিল্টার</h2>
+        <h2>Filter</h2>
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:end;">
           <select id="filter">
-            <option value="all">সমস্ত সময়</option>
-            <option value="month">এই মাস</option>
-            <option value="last">গত মাস</option>
-            <option value="year">এই বছর</option>
-            <option value="custom">কাস্টম রেঞ্জ</option>
+            <option value="all">All Time</option>
+            <option value="month">This Month</option>
+            <option value="last">Last Month</option>
+            <option value="year">This Year</option>
+            <option value="custom">Custom Range</option>
           </select>
-          <select id="categoryFilter"><option value="all">সব ক্যাটাগরি</option></select>
+          <select id="categoryFilter"><option value="all">All Categories</option></select>
           <div style="display:flex; gap:8px;">
             <input type="date" id="fromDate" class="hidden">
             <input type="date" id="toDate" class="hidden">
-            <button id="applyFilter" class="btn">প্রয়োগ</button>
-            <button id="exportCSV" class="btn">CSV এক্সপোর্ট</button>
+            <button id="applyFilter" class="btn">Apply</button>
+            <button id="exportCSV" class="btn">Export CSV</button>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <h2>লেনদেনের তালিকা</h2>
+        <h2>Transaction List</h2>
         <div style="overflow-x:auto;">
           <table>
             <thead id="tableHead"></thead>
@@ -110,25 +112,25 @@ Fund
 
     <aside>
       <div class="card">
-        <h2>সারাংশ</h2>
+        <h2>Summary</h2>
         <div class="summary-grid">
-          <div class="sum"><div>মোট আয়</div><strong id="totalIncome">0</strong> BDT</div>
-          <div class="sum"><div>মোট ব্যয়</div><strong id="totalExpense">0</strong> BDT</div>
-          <div class="sum" style="background: linear-gradient(135deg, #d4f4dd, #a7f3d0);"><div>ব্যালেন্স</div><strong id="balance">0</strong> BDT</div>
+          <div class="sum"><div>Total Income</div><strong id="totalIncome">0</strong> BDT</div>
+          <div class="sum"><div>Total Expense</div><strong id="totalExpense">0</strong> BDT</div>
+          <div class="sum" style="background: linear-gradient(135deg, #d4f4dd, #a7f3d0);"><div>Balance</div><strong id="balance">0</strong> BDT</div>
         </div>
       </div>
 
       <div class="card hidden" id="categoryManager">
-        <h2>ক্যাটাগরি পরিচালনা</h2>
+        <h2>Manage Categories</h2>
         <div style="display:flex; gap:8px; margin-bottom:10px;">
-          <input type="text" id="newCategory" placeholder="নতুন ক্যাটাগরি নাম">
-          <button id="addCategory" class="btn btn-success">যোগ</button>
+          <input type="text" id="newCategory" placeholder="New Category Name">
+          <button id="addCategory" class="btn btn-success">Add</button>
         </div>
         <div id="categoryList"></div>
       </div>
 
       <div class="card">
-        <h2>আয় গ্রাফ (সর্বশেষ ৬ মাস)</h2>
+        <h2>Income Chart (Last 6 Months)</h2>
         <canvas id="incomeChart" height="200"></canvas>
       </div>
     </aside>
@@ -137,18 +139,18 @@ Fund
 
 <div id="loginModal" class="modal hidden">
   <div class="modal-box">
-    <h2 style="color:var(--primary);">অ্যাডমিন লগইন</h2>
-    <input type="password" id="passwordInput" placeholder="পাসওয়ার্ড দিন" style="width:100%; padding:10px; margin:12px 0; border-radius:8px; border:1px solid #ccc;">
+    <h2 style="color:var(--primary);">Admin Login</h2>
+    <input type="password" id="passwordInput" placeholder="Enter Password" style="width:100%; padding:10px; margin:12px 0; border-radius:8px; border:1px solid #ccc;">
     <div style="display:flex; gap:8px; justify-content:center;">
-      <button id="loginConfirm" class="btn btn-success">লগইন</button>
-      <button id="loginCancel" class="btn">বাতিল</button>
+      <button id="loginConfirm" class="btn btn-success">Login</button>
+      <button id="loginCancel" class="btn">Cancel</button>
     </div>
-    <small style="display:block; margin-top:12px; color:#666;">পাসওয়ার্ড: <b>ahosan</b></small>
+    <small style="display:block; margin-top:12px; color:#666;">Default Password: <b>ahosan</b></small>
   </div>
 </div>
 
 <script>
-  // Firebase Initialize - শুধুমাত্র এখানেই db আছে
+  // Firebase Initialize
   const firebaseConfig = {
     apiKey: "AIzaSyCsZrHcpJgGoTHeW0Ex4Hv20KLtDopPq4",
     authDomain: "llfc-4d2df.firebaseapp.com",
@@ -164,7 +166,7 @@ Fund
   let isAdmin = false;
   let chart = null;
   let allTransactions = [];
-  let allCategories = ['জুমা দান','মাসিক ফান্ড','রামাদান ফান্ড','যাকাত','সাদাকাহ','রক্ষণাবেক্ষণ','বিদ্যুৎ ও ইউটিলিটি','ইমাম বেতন','নির্মাণ','ঈদ ফান্ড'];
+  let allCategories = ['Jummah Donation','Monthly Fund','Ramadan Fund','Zakat','Sadaqah','Maintenance','Electricity & Utility','Imam Salary','Construction','Eid Fund'];
 
   const els = {
     status: document.getElementById('status'),
@@ -199,31 +201,31 @@ Fund
     categoryList: document.getElementById('categoryList')
   };
 
-  // Login
+  // Login System
   els.loginBtn.onclick = () => els.modal.classList.remove('hidden');
   els.loginCancel.onclick = () => { els.modal.classList.add('hidden'); els.passwordInput.value = ''; };
   els.loginConfirm.onclick = () => {
     if (els.passwordInput.value === 'ahosan') {
       isAdmin = true;
       els.modal.classList.add('hidden');
-      els.status.textContent = 'অ্যাডমিন মোড';
+      els.status.textContent = 'Admin Mode';
       els.loginBtn.classList.add('hidden');
       els.logoutBtn.classList.remove('hidden');
       els.adminPanel.classList.remove('hidden');
       els.categoryManager.classList.remove('hidden');
-    } else alert('ভুল পাসওয়ার্ড');
+    } else alert('Wrong password!');
     els.passwordInput.value = '';
   };
   els.logoutBtn.onclick = () => {
     isAdmin = false;
-    els.status.textContent = 'দর্শক মোড';
+    els.status.textContent = 'Viewer Mode';
     els.logoutBtn.classList.add('hidden');
     els.loginBtn.classList.remove('hidden');
     els.adminPanel.classList.add('hidden');
     els.categoryManager.classList.add('hidden');
   };
 
-  // Load Categories
+  // Load & Save Categories
   async function loadCategories() {
     try {
       const doc = await db.collection('mosqueCategories').doc('list').get();
@@ -239,7 +241,7 @@ Fund
 
   function populateCategories() {
     [els.category, els.categoryFilter].forEach(sel => {
-      sel.innerHTML = sel === els.categoryFilter ? '<option value="all">সব ক্যাটাগরি</option>' : '';
+      sel.innerHTML = sel === els.categoryFilter ? '<option value="all">All Categories</option>' : '';
       allCategories.forEach(c => sel.add(new Option(c, c)));
     });
   }
@@ -252,9 +254,9 @@ Fund
       div.innerHTML = `<span>${c}</span>`;
       if (isAdmin) {
         const btn = document.createElement('button');
-        btn.className = 'btn btn-danger'; btn.textContent = 'মুছুন';
+        btn.className = 'btn btn-danger'; btn.textContent = 'Delete';
         btn.onclick = async () => {
-          if (confirm('মুছবেন?')) {
+          if (confirm('Delete this category?')) {
             allCategories.splice(i, 1);
             await saveCategories();
             populateCategories();
@@ -269,8 +271,8 @@ Fund
 
   els.addCategory.onclick = async () => {
     const name = els.newCategory.value.trim();
-    if (!name) return alert('নাম দিন');
-    if (allCategories.includes(name)) return alert('আগে থেকে আছে');
+    if (!name) return alert('Enter category name');
+    if (allCategories.includes(name)) return alert('Already exists');
     allCategories.push(name);
     await saveCategories();
     els.newCategory.value = '';
@@ -278,7 +280,7 @@ Fund
     renderCategories();
   };
 
-  // Load Transactions Real-time
+  // Real-time Transactions
   db.collection('mosqueTransactions')
     .orderBy('date', 'desc')
     .onSnapshot(snap => {
@@ -290,7 +292,7 @@ Fund
 
   els.addBtn.onclick = async () => {
     const amt = parseFloat(els.amount.value);
-    if (!amt || amt <= 0) return alert('সঠিক পরিমাণ দিন');
+    if (!amt || amt <= 0) return alert('Enter valid amount');
     await db.collection('mosqueTransactions').add({
       type: els.type.value,
       category: els.category.value,
@@ -299,15 +301,16 @@ Fund
       note: els.note.value.trim(),
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
-    els.amount.value = ''; els.note.value = '';
+    els.amount.value = ''; 
+    els.note.value = '';
   };
 
   els.sampleBtn.onclick = async () => {
-    if (!confirm('স্যাম্পল ডাটা যোগ করবেন?')) return;
+    if (!confirm('Add sample data?')) return;
     const samples = [
-      {type:'income', category:'জুমা দান', amount:12500, date:'2025-11-15', note:'জুমার সংগ্রহ'},
-      {type:'income', category:'রামাদান ফান্ড', amount:45000, date:'2025-04-05', note:'রামাদান 2025'},
-      {type:'expense', category:'বিদ্যুৎ ও ইউটিলিটি', amount:8900, date:'2025-11-01', note:'মাসিক বিল'}
+      {type:'income', category:'Jummah Donation', amount:12500, date:'2025-11-15', note:'Friday Collection'},
+      {type:'income', category:'Ramadan Fund', amount:45000, date:'2025-04-05', note:'Ramadan 2025'},
+      {type:'expense', category:'Electricity & Utility', amount:8900, date:'2025-11-01', note:'Monthly Bill'}
     ];
     for (const s of samples) {
       await db.collection('mosqueTransactions').add({ ...s, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
@@ -333,62 +336,114 @@ Fund
 
   function render() {
     const list = getFiltered();
-    els.tableHead.innerHTML = `<tr><th>তারিখ</th><th>টাইপ</th><th>ক্যাটাগরি</th><th>টাকা</th><th>নোট</th>${isAdmin?'<th>ক্রিয়া</th>':''}</tr>`;
+
+    // Fixed Table Header
+    els.tableHead.innerHTML = `
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Note</th>
+        ${isAdmin ? '<th>Action</th>' : ''}
+      </tr>
+    `;
+
+    // Clear and rebuild table body
     els.tableBody.innerHTML = '';
+
     list.forEach(t => {
       const row = els.tableBody.insertRow();
-      const color = t.type === 'income' ? '#10b981' : '#ef4444';
-      row.innerHTML = `<td>\( {t.date}</td><td style="color: \){color};font-weight:600;">\( {t.type==='income'?'আয়':'ব্যয়'}</td><td> \){t.category}</td><td>\( {Number(t.amount).toLocaleString()} BDT</td><td> \){t.note||'-'}</td>${isAdmin?'<td></td>':''}`;
+      const typeText = t.type === 'income' ? 'Income' : 'Expense';
+      const typeColor = t.type === 'income' ? '#10b981' : '#ef4444';
+
+      row.innerHTML = `
+        <td>${t.date || 'N/A'}</td>
+        <td style="color:\( {typeColor}; font-weight:600;"> \){typeText}</td>
+        <td>${t.category || 'Unknown'}</td>
+        <td>${Number(t.amount).toLocaleString()} BDT</td>
+        <td>${t.note || '-'}</td>
+        ${isAdmin ? '<td></td>' : ''}
+      `;
+
+      // Add Delete Button for Admin
       if (isAdmin) {
-        const del = document.createElement('button');
-        del.className = 'btn btn-danger'; del.textContent = 'মুছুন'; del.style.cssText = 'padding:4px 8px; font-size:13px;';
-        del.onclick = () => { if(confirm('মুছবেন?')) db.collection('mosqueTransactions').doc(t.id).delete(); };
-        row.cells[row.cells.length-1].appendChild(del);
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.style.cssText = 'padding:4px 8px; font-size:13px;';
+        deleteBtn.onclick = () => {
+          if (confirm('Delete this transaction?')) {
+            db.collection('mosqueTransactions').doc(t.id).delete();
+          }
+        };
+        row.cells[row.cells.length - 1].appendChild(deleteBtn);
       }
     });
 
-    const inc = list.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount),0);
-    const exp = list.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount),0);
-    els.totalIncome.textContent = inc.toLocaleString();
-    els.totalExpense.textContent = exp.toLocaleString();
-    els.balance.textContent = (inc - exp).toLocaleString();
+    // Update Summary
+    const totalInc = list.filter(t => t.type === 'income').reduce((a, t) => a + Number(t.amount), 0);
+    const totalExp = list.filter(t => t.type === 'expense').reduce((a, t) => a + Number(t.amount), 0);
 
-    // Chart
+    els.totalIncome.textContent = totalInc.toLocaleString();
+    els.totalExpense.textContent = totalExp.toLocaleString();
+    els.balance.textContent = (totalInc - totalExp).toLocaleString();
+
+    // Income Chart
     const monthly = {};
-    allTransactions.filter(t=>t.type==='income').forEach(t => {
-      const m = t.date.slice(0,7);
-      monthly[m] = (monthly[m]||0) + Number(t.amount);
+    allTransactions.filter(t => t.type === 'income').forEach(t => {
+      const monthKey = t.date ? t.date.slice(0, 7) : '';
+      if (monthKey) monthly[monthKey] = (monthly[monthKey] || 0) + Number(t.amount);
     });
+
     const labels = Object.keys(monthly).sort().slice(-6);
-    const values = labels.map(m => monthly[m]||0);
-    const bnLabels = labels.map(m => new Date(m+'-01').toLocaleDateString('bn-BD', {month:'short', year:'numeric'}));
+    const values = labels.map(m => monthly[m] || 0);
+    const displayLabels = labels.map(m => new Date(m + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
 
     if (chart) chart.destroy();
     chart = new Chart(document.getElementById('incomeChart'), {
       type: 'bar',
-      data: { labels: bnLabels, datasets: [{ label: 'আয়', data: values, backgroundColor: 'rgba(59,130,246,0.7)' }] },
-      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+      data: {
+        labels: displayLabels,
+        datasets: [{
+          label: 'Income',
+          data: values,
+          backgroundColor: 'rgba(59, 130, 246, 0.7)'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
     });
   }
 
+  // Filter Controls
   els.filter.onchange = () => {
-    const show = els.filter.value === 'custom';
-    els.fromDate.classList.toggle('hidden', !show);
-    els.toDate.classList.toggle('hidden', !show);
+    const isCustom = els.filter.value === 'custom';
+    els.fromDate.classList.toggle('hidden', !isCustom);
+    els.toDate.classList.toggle('hidden', !isCustom);
   };
+
   els.applyFilter.onclick = render;
 
   els.exportCSV.onclick = () => {
-    let csv = 'তারিখ,টাইপ,ক্যাটাগরি,পরিমাণ,নোট\n';
-    getFiltered().forEach(t => csv += `\( {t.date}, \){t.type==='income'?'আয়':'ব্যয়'},\( {t.category}, \){t.amount},"${(t.note||'').replace(/"/g,'""')}"\n`);
-    const blob = new Blob(['\uFEFF' + csv], {type: 'text/csv;charset=utf-8'});
+    let csv = 'Date,Type,Category,Amount,Note\n';
+    getFiltered().forEach(t => {
+      const type = t.type === 'income' ? 'Income' : 'Expense';
+      const note = (t.note || '').replace(/"/g, '""');
+      csv += `\( {t.date}, \){type},\( {t.category}, \){t.amount},"${note}"\n`;
+    });
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'মসজিদ_অর্থ_রিপোর্ট.csv';
+    a.href = url;
+    a.download = 'Mosque_Finance_Report.csv';
     a.click();
   };
 
-  // Start
+  // Initialize
   loadCategories();
 </script>
 </body>

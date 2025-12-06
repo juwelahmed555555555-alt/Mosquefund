@@ -50,7 +50,7 @@
 <div class="container">
   <header>
     <div class="logo"><i class="fas fa-mosque"></i></div>
-    <h1>Chiraipara Mosque Finance Department</h1>
+    <h1>Chirai Para Mosque-based potential Islamic society</h1>
     <p class="tagline">Donation & Expense Management System (Firestore)</p>
     <div class="auth">
       <span id="status">Viewer Mode</span>

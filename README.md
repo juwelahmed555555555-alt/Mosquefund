@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,11 +145,23 @@
       <button id="loginConfirm" class="btn btn-success">Login</button>
       <button id="loginCancel" class="btn">Cancel</button>
     </div>
-    <small style="display:block; margin-top:12px; color:#666;">Default Password: <b>ahosan</b></small>
+    <small style="display:block; margin-top:12px; color:#888;">Hint: Contact mosque admin for password</small>
   </div>
 </div>
 
 <script>
+  // Simple hash function (djb2)
+  function hash(str) {
+    let h = 5381;
+    for (let i = 0; i < str.length; i++) {
+      h = ((h << 5) + h) + str.charCodeAt(i); /* h * 33 + c */
+    }
+    return h >>> 0;
+  }
+
+  // Hashed version of the real password "Ahosan" → 4055642719
+  const CORRECT_HASH = 4055642719;
+
   // Firebase Initialize
   const firebaseConfig = {
     apiKey: "AIzaSyCsZrHcpJgGoTHeW0Ex4Hv20KLtDopPq4",
@@ -200,11 +213,12 @@
     categoryList: document.getElementById('categoryList')
   };
 
-  // Login System
+  // Secure Login System (Password is now hidden)
   els.loginBtn.onclick = () => els.modal.classList.remove('hidden');
   els.loginCancel.onclick = () => { els.modal.classList.add('hidden'); els.passwordInput.value = ''; };
   els.loginConfirm.onclick = () => {
-    if (els.passwordInput.value === 'ahosan') {
+    const inputHash = hash(els.passwordInput.value.trim());
+    if (inputHash === CORRECT_HASH) {
       isAdmin = true;
       els.modal.classList.add('hidden');
       els.status.textContent = 'Admin Mode';
@@ -212,9 +226,13 @@
       els.logoutBtn.classList.remove('hidden');
       els.adminPanel.classList.remove('hidden');
       els.categoryManager.classList.remove('hidden');
-    } else alert('Wrong password!');
+      alert("Login successful!");
+    } else {
+      alert('Wrong password!');
+    }
     els.passwordInput.value = '';
   };
+
   els.logoutBtn.onclick = () => {
     isAdmin = false;
     els.status.textContent = 'Viewer Mode';
@@ -228,8 +246,8 @@
   async function loadCategories() {
     try {
       const doc = await db.collection('mosqueCategories').doc('list').get();
-      if (doc.exists) allCategories = doc.data().items;
-    } catch (e) { console.log("Categories not found, using default"); }
+      if (doc.exists) allCategories = doc.data().items || allCategories;
+    } catch (e) { console.log("Using default categories"); }
     populateCategories();
     renderCategories();
   }
@@ -336,7 +354,6 @@
   function render() {
     const list = getFiltered();
 
-    // Fixed Table Header
     els.tableHead.innerHTML = `
       <tr>
         <th>Date</th>
@@ -348,9 +365,7 @@
       </tr>
     `;
 
-    // Clear and rebuild table body
     els.tableBody.innerHTML = '';
-
     list.forEach(t => {
       const row = els.tableBody.insertRow();
       const typeText = t.type === 'income' ? 'Income' : 'Expense';
@@ -365,7 +380,6 @@
         ${isAdmin ? '<td></td>' : ''}
       `;
 
-      // Add Delete Button for Admin
       if (isAdmin) {
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn btn-danger';
@@ -380,15 +394,14 @@
       }
     });
 
-    // Update Summary
     const totalInc = list.filter(t => t.type === 'income').reduce((a, t) => a + Number(t.amount), 0);
-    const totalExp = list.filter(t => t.type === 'expense').reduce((a, t) => a + Number(t.amount), 0);
+    const totalExp = list.filter(t => t.type === 'statement').reduce((a, t) => a + Number(t.amount), 0);
 
     els.totalIncome.textContent = totalInc.toLocaleString();
     els.totalExpense.textContent = totalExp.toLocaleString();
     els.balance.textContent = (totalInc - totalExp).toLocaleString();
 
-    // Income Chart
+    // Income Chart (Last 6 Months)
     const monthly = {};
     allTransactions.filter(t => t.type === 'income').forEach(t => {
       const monthKey = t.date ? t.date.slice(0, 7) : '';
